@@ -1,5 +1,6 @@
 // Esse elemento simplesmente recebe um card e mostra ele na tela
 // Possíveis animações aqui
+// Precisará ser totalmente refeito em termos de lógica
 
 import {Character} from "../playables"
 
@@ -11,8 +12,8 @@ interface CardForGameProps {
 export default  function CardForP2({cardCharacter}:CardForGameProps) {
     const energys = 18
     const renderEnergy:string[] = Array.from({length:energys},()=>cardCharacter.energyEmoji)
-    const costAtackOne = Array.from({length:cardCharacter.atackOne.energyCost},()=>cardCharacter.energyEmoji).join(' ')
-    const costAtackTwo = Array.from({length:cardCharacter.atackTwo.energyCost},()=>cardCharacter.energyEmoji).join(' ')
+    const costattackOne = Array.from({length:cardCharacter.attackOne.energyCost},()=>cardCharacter.energyEmoji).join(' ')
+    const costattackTwo = Array.from({length:cardCharacter.attackTwo.energyCost},()=>cardCharacter.energyEmoji).join(' ')
   return (
     <div className="flex">
         <div className="w-1/5 flex flex-wrap flex-col gap-1 items-start h-80 mt-5">
@@ -29,14 +30,14 @@ export default  function CardForP2({cardCharacter}:CardForGameProps) {
                 <img src={cardCharacter.image} className="w-40 rounded"></img>
             </div>
             <div className="flex bg-cyan-200 my-1">
-                <p className="w-1/6 my-auto">{cardCharacter.atackOne.power}</p>
-                <button className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded">{cardCharacter.atackOne.name}</button>
-                <p className="w-2/6 my-auto">{costAtackOne}</p>
+                <p className="w-1/6 my-auto">{cardCharacter.attackOne.power}</p>
+                <button className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded">{cardCharacter.attackOne.name}</button>
+                <p className="w-2/6 my-auto">{costattackOne}</p>
             </div>
             <div className="flex bg-cyan-200 my-1">
-                <p className="w-1/6 my-auto">{cardCharacter.atackTwo.power}</p>
-                <button className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded">{cardCharacter.atackTwo.name}</button>
-                <p className="w-2/6 my-auto">{costAtackTwo}</p>
+                <p className="w-1/6 my-auto">{cardCharacter.attackTwo.power}</p>
+                <button className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded">{cardCharacter.attackTwo.name}</button>
+                <p className="w-2/6 my-auto">{costattackTwo}</p>
             </div>
             <div className="flex bg-cyan-200 my-1 justify-start">
             <button className="bg-red-400 w-8 h-8 rounded m-1">

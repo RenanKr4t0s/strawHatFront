@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import {Character} from "../playables"
+import SortThePower from "./SortThePower";
 
 interface CardForGameProps {
     stateCharacter: Character;
@@ -19,25 +20,29 @@ export default  function CardForP1({
     stateEnemy, setStateEnemy,
     p1Turno, toggleTurno
 }:CardForGameProps) {
-    const [energys, setEnergys] = useState(2)
-    const renderEnergy:string[] = Array.from({length:energys},()=>stateCharacter.energyEmoji)
-    const costAtackOne:string = Array.from({length:stateCharacter.atackOne.energyCost},()=>stateCharacter.energyEmoji).join(' ')
-    const costAtackTwo:string = Array.from({length:stateCharacter.atackTwo.energyCost},()=>stateCharacter.energyEmoji).join(' ')
+    const renderEnergy:string[] = Array.from({length:stateCharacter.initialEnergy},()=>stateCharacter.energyEmoji)
+    const costattackOne:string = Array.from({length:stateCharacter.attackOne.energyCost},()=>stateCharacter.energyEmoji).join(' ')
+    const costattackTwo:string = Array.from({length:stateCharacter.attackTwo.energyCost},()=>stateCharacter.energyEmoji).join(' ')
 
 
-    function handleAtack(e: React.MouseEvent<HTMLButtonElement>){
-        const thisAtack = (e.target as HTMLButtonElement).name // isso me retorna "attackOne"
-        const thisPower:number = stateCharacter[thisAtack].power;
-        const thisEnergyCost:number = stateCharacter[thisAtack].energyCost;
+    function handleattack(e: React.MouseEvent<HTMLButtonElement>){
+        const thisattack = (e.target as HTMLButtonElement).name // isso me retorna "attackOne"
+        const thisPower:number = stateCharacter[thisattack].power;
+        const thisEnergyCost:number = stateCharacter[thisattack].energyCost;
 
-        if(energys>=thisEnergyCost){
+        if(stateCharacter.initialEnergy>=thisEnergyCost){
+            setStateCharacter((prevState)=>({
+                ... prevState,
+                initialEnergy: prevState.initialEnergy - thisEnergyCost,
+
+            }));
             setStateEnemy((prevState) => ({
                 ...prevState, // Copia todas as outras propriedades do estado anterior
                 life: prevState.life - thisPower, // Atualiza apenas o campo "life"
-            }));
-            setEnergys((prevEnergy)=>(prevEnergy-thisEnergyCost))
+            })); 
             toggleTurno()
             console.log(stateEnemy.life)
+            SortThePower(stateEnemy, setStateEnemy);
         }else{
             alert("A quantidade de energia não permite o atque")
         }
@@ -45,7 +50,6 @@ export default  function CardForP1({
     function handleSkip(){
         toggleTurno()
         p1Turno?alert("Turno do player 2"):alert("Turno do player 1")
-        setEnergys(energys+1)
     }
 
   return (
@@ -59,18 +63,18 @@ export default  function CardForP1({
                 <img src={stateCharacter.image} className="w-40 rounded"></img>
             </div>
             <div className="flex bg-cyan-200 my-1">
-                <p className="w-2/6 my-auto">{costAtackOne}</p>
-                <button name="atackOne" className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded" 
-                    onClick={(e)=>{handleAtack(e)}}>{stateCharacter.atackOne.name}
+                <p className="w-2/6 my-auto">{costattackOne}</p>
+                <button name="attackOne" className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded" 
+                    onClick={(e)=>{handleattack(e)}}>{stateCharacter.attackOne.name}
                 </button>
-                <p className="w-1/6 my-auto">{stateCharacter.atackOne.power}</p>
+                <p className="w-1/6 my-auto">{stateCharacter.attackOne.power}</p>
             </div>
             <div className="flex bg-cyan-200 my-1">
-                <p className="w-2/6 my-auto">{costAtackTwo}</p>
-                <button name="atackTwo" className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded"
-                    onClick={(e)=>{handleAtack(e)}}>{stateCharacter.atackTwo.name}
+                <p className="w-2/6 my-auto">{costattackTwo}</p>
+                <button name="attackTwo" className="w-3/6 bg-slate-400 hover:bg-slate-600 my-4 mx-2 py-1 rounded"
+                    onClick={(e)=>{handleattack(e)}}>{stateCharacter.attackTwo.name}
                 </button>
-                <p className="w-1/6 my-auto">{stateCharacter.atackTwo.power}</p>
+                <p className="w-1/6 my-auto">{stateCharacter.attackTwo.power}</p>
             </div>
             <div className="flex bg-cyan-200 my-1 justify-end">
             <button onClick={handleSkip} className="bg-red-400 w-8 h-8 rounded m-1">

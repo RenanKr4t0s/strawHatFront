@@ -27,9 +27,10 @@ type Character={
     name:string,
     life:number,
     image:string,
+    initialEnergy: number,
     energyEmoji:string,
-    atackOne: Attack,
-    atackTwo: Attack,
+    attackOne: Attack,
+    attackTwo: Attack,
     basicEnergy: Energy
     secondEnergy: Energy
     lifeBonus: LifeBonus
@@ -42,13 +43,14 @@ const luffy:Character = {
     name: "Luffy",
     life: 100,
     image : luffyImage,
+    initialEnergy: 2,
     energyEmoji: "🍗",
-    atackOne:{
+    attackOne:{
         energyCost: 3,
         name: "Jet Pistol",
         power: 40,
     },
-    atackTwo:{
+    attackTwo:{
         energyCost: 6,
         name: "Bazoooka",
         power: 90,
@@ -78,13 +80,14 @@ const zoro: Character = {
     name: "Zoro",
     life: 120,
     image: zoroImage,
+    initialEnergy:0,
     energyEmoji: "⚔️",
-    atackOne: {
+    attackOne: {
       energyCost: 1,
       name: "Nitoriu",
       power: 10,
     },
-    atackTwo: {
+    attackTwo: {
       energyCost: 3,
       name: "Santoryu Ougi",
       power: 40,
@@ -114,13 +117,14 @@ const zoro: Character = {
     name: "Enel",
     life: 150,
     image: enelImage,
+    initialEnergy:1,
     energyEmoji: "⚡",
-    atackOne: {
+    attackOne: {
       energyCost: 6,
       name: "Raigou",
       power: 50,
     },
-    atackTwo: {
+    attackTwo: {
       energyCost: 9,
       name: "El Thor",
       power: 100,
