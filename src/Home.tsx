@@ -22,6 +22,9 @@ export default function Home(){
               <Link to="/cardview" className='px-4 py-3 bg-green-500 text-center text-white font-bold rounded hover:bg-green-600 transition' >
                 Acessar o CardView
               </Link>
+              <Link to="/cardgame" className='px-4 py-3 bg-purple-500 text-center text-white font-bold rounded hover:bg-purple-600 transition' >
+                Acessar o CardGame
+              </Link>
             </div>
             <p className="mt-6 text-center text-gray-500 italic">
               Olá mundo maluco do Vite, que componente estranho!!
