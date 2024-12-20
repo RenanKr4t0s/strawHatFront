@@ -19,16 +19,19 @@ export default  function CardForP1({
     stateCharacter, setStateCharacter,
     stateEnemy, setStateEnemy,
     p1Turno, toggleTurno
+
 }:CardForGameProps) {
     const renderEnergy:string[] = Array.from({length:stateCharacter.initialEnergy},()=>stateCharacter.energyEmoji)
     const costattackOne:string = Array.from({length:stateCharacter.attackOne.energyCost},()=>stateCharacter.energyEmoji).join(' ')
     const costattackTwo:string = Array.from({length:stateCharacter.attackTwo.energyCost},()=>stateCharacter.energyEmoji).join(' ')
+    const [showSortThePower, setShowSortThePower] = useState(false)
 
 
     function handleattack(e: React.MouseEvent<HTMLButtonElement>){
-        const thisattack = (e.target as HTMLButtonElement).name // isso me retorna "attackOne"
-        const thisPower:number = stateCharacter[thisattack].power;
-        const thisEnergyCost:number = stateCharacter[thisattack].energyCost;
+        const theAttack: string = (e.target as HTMLButtonElement).name // isso me retorna "attackOne"
+        const thisAttack = theAttack==="attackOne"?stateCharacter.attackOne: stateCharacter.attackTwo
+        const thisPower:number = thisAttack.power;
+        const thisEnergyCost:number = thisAttack.energyCost;
 
         if(stateCharacter.initialEnergy>=thisEnergyCost){
             setStateCharacter((prevState)=>({
@@ -42,18 +45,28 @@ export default  function CardForP1({
             })); 
             toggleTurno()
             console.log(stateEnemy.life)
-            SortThePower(stateEnemy, setStateEnemy);
+            setShowSortThePower(true)
+            
         }else{
             alert("A quantidade de energia não permite o atque")
         }
     }
     function handleSkip(){
         toggleTurno()
-        p1Turno?alert("Turno do player 2"):alert("Turno do player 1")
+        if(p1Turno){alert("Turno do player 2")} 
+        else{alert("Turno do player 1")}
+        setShowSortThePower(true)
     }
 
   return (
     <div className="flex">
+        {showSortThePower && (
+            <SortThePower
+                stateCharacter={stateEnemy}
+                setStateCharacter={setStateEnemy}
+                setShowSortThePower={setShowSortThePower}
+            />
+        )} 
         <div className="w-4/5 m-2 bg-slate-600 p-2">
             <div className="flex flex-row">
                 <div className="w-4/5 bg-cyan-200 text-center"><h1>{stateCharacter.name}</h1></div>

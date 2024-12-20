@@ -1,27 +1,32 @@
+//Conclusão
+// Depois de pensar muito percebi que aqui temos dois alerts diferentes:
+    //Um para trocar de turno em mandar calcular os efeitos
+    //Outro para informar e aplicar os efeitos calculados
+
 import { Dispatch, SetStateAction } from 'react';
 import {Character} from "../playables"
 
 type SortThePowerProps = {
     stateCharacter: Character;
     setStateCharacter: Dispatch<SetStateAction<Character>>;
+    setShowSortThePower: Dispatch<SetStateAction<boolean>>;
   };
 
-type setEnergyNew = (howMuch: number) => void;
-
-export default function SortThePower({stateCharacter, setStateCharacter}:SortThePowerProps){
+export default function SortThePower({stateCharacter, setStateCharacter, setShowSortThePower}:SortThePowerProps){
     type Chances = {
         name:string,
         chance: number,
-        efect: void,
+        efect: ()=>void,
     }
+    const random = Math.random()
+    let itemSorteado: string = "";
+    let efeitoSorteado: ()=>void;
 
     function setEnergyNew(howMuch:number):void{
         setStateCharacter(prevState =>({
             ...prevState,
             initialEnergy: prevState.initialEnergy + howMuch
-        })
-            //pegar tudo que já tinha e somar a energy o valor de howMuch
-        )
+        }))
     }
     function setLifeNew(howMuch:number):void{
         setStateCharacter(prevState =>({
@@ -50,22 +55,22 @@ export default function SortThePower({stateCharacter, setStateCharacter}:SortThe
         {
             name : "basicEnergy",
             chance : stateCharacter.basicEnergy.chance,
-            efect : setEnergyNew(stateCharacter.basicEnergy.quantity),
+            efect : ()=>setEnergyNew(stateCharacter.basicEnergy.quantity),
         },
         {
             name: "secondEnergy",
             chance:stateCharacter.secondEnergy.chance,
-            efect : setEnergyNew(stateCharacter.secondEnergy.quantity),
+            efect : ()=>setEnergyNew(stateCharacter.secondEnergy.quantity),
         },
         {
             name: "lifeBonus",
             chance:stateCharacter.lifeBonus.chance,
-            efect : setLifeNew(stateCharacter.lifeBonus.quantity)
+            efect : ()=>setLifeNew(stateCharacter.lifeBonus.quantity)
         },
         {
             name: "transformation",
             chance:stateCharacter.transformation.chance,
-            efect: powerUp(),
+            efect: ()=>powerUp(),
         },
     ]
     const itensComChanceAcumulada = itens.map((item, index, array) => {
@@ -76,15 +81,20 @@ export default function SortThePower({stateCharacter, setStateCharacter}:SortThe
         };
       });
       
-      console.log(itensComChanceAcumulada);
-      const random = Math.random()
-      let itemSorteado: string = "";
 
       for (let i = 0; i < itensComChanceAcumulada.length; i++) {
         if (random <= itensComChanceAcumulada[i].chance) {
           itemSorteado = itensComChanceAcumulada[i].name;
+          efeitoSorteado = itensComChanceAcumulada[i].efect;
           break;
         }
+      }
+      function handleClick(){
+        if (!efeitoSorteado) {
+            alert("Problema ao sortear o efeito");
+        }
+        efeitoSorteado()
+        setShowSortThePower(false)
       }
 
     return(
@@ -92,6 +102,9 @@ export default function SortThePower({stateCharacter, setStateCharacter}:SortThe
             <div className="bg-white p-8 rounded-lg shadow-lg w-96 text-center">
                 <h1 className="text-2xl font-bold mb-4">Seu bônus da Rodada é:</h1>
                 <h2 className="text-xl font-semibold text-orange-500">{itemSorteado}</h2>
+                <button onClick={handleClick} className="bg-red-400 w-40 h-8 rounded m-1">
+                    <h1>Aplicar efeito</h1>
+                </button>
             </div>
         </div>
     )
